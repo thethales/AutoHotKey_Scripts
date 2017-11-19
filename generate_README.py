@@ -2,14 +2,13 @@ import sys
 
 
 from builtins import print
-
-
-def main():
-    shortcuts = [
+shortcuts = [
         ['!','SHIFT'],
         ['^','CTRL'],
         ['+','ALT']
     ]
+
+def main():
 
     f = open('th_hotkeys.ahk', 'r')
     x = f.readlines()
@@ -19,8 +18,9 @@ def main():
             c += x[i] + '\n'
             if not (isLinhaSeparadora(x[i+1])):
                 c += '  -> ' +  x[i+1].replace(';','')
+
+                c += '  -> Descrição do Atalho: ' + searchShortcut(x[i + 1].replace(';', ''))
                 c += '\n'
-                c += '  -> Descrição do Atalho: ' + x[i + 1].replace(';', '')
     criarReadMe(c)
             #print(x[i])
             #print(x[i+1])
@@ -42,6 +42,14 @@ def isLinhaSeparadora(line):
         return False
     return;
 
+
+def searchShortcut(line):
+
+    for i, item in enumerate(shortcuts):
+        if (item[0] in line):
+            line = line.replace(item[0], item[1] + ' ')
+    return line.replace("::","")
+    return;
 
 def criarReadMe(conteudo):
 
